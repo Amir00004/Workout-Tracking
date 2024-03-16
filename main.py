@@ -1,6 +1,11 @@
 import requests
 from datetime import date, datetime
 
+GENDER = "male"
+WEIGHT_KG = 80
+HEIGHT_CM = 174
+AGE = 20
+
 today = date.today()
 d1 = today.strftime("%d/%m/%Y")
 
@@ -19,25 +24,26 @@ headers = {
 }
 
 json = {
-    "query": input("please enter what u did today")
+    "query": input("please enter what u did today"),
+    "gender": GENDER,
+    "weight_kg": WEIGHT_KG,
+    "height_cm": HEIGHT_CM,
+    "age": AGE
 }
 
 response = requests.post(url=endpoint,json=json, headers=headers)
-workout_text = response.text
-workout_split = workout_text.split(',')
+workout_text = response.json()
 
-exercise = workout_split[9].split(':')[1]
-duration = workout_split[2].split(':')[1]
-calories = workout_split[4].split(':')[1]
-
-json = {
-    "workout" : {
-        "date" : d1,
-        "time" : current_time,
-        "exercise" : exercise,
-        "duration" : duration,
-        "calories" : calories
+for exercise in workout_text["exercises"]:
+    json = {
+        "workout": {
+            "date": d1,
+            "time": current_time,
+            "exercise": exercise["name"].title(),
+            "duration": exercise["duration_min"],
+            "calories": exercise["nf_calories"]
+        }
     }
-}
+
 
 response = requests.post("YOUR_SHEETY_URL", json=json)
