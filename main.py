@@ -3,11 +3,9 @@ from datetime import date, datetime
 
 today = date.today()
 d1 = today.strftime("%d/%m/%Y")
-print("Today's date:", d1)
-now = datetime.now()
 
+now = datetime.now()
 current_time = now.strftime("%H:%M:%S")
-print("Current Time =", current_time)
 
 APP_ID = "YOUR_API_ID"
 APP_KEY = "YOUR_API_KEY"
@@ -31,8 +29,6 @@ workout_split = workout_text.split(',')
 exercise = workout_split[9].split(':')[1]
 duration = workout_split[2].split(':')[1]
 calories = workout_split[4].split(':')[1]
-
-print(workout_text)
 
 json = {
     "workout" : {
